@@ -24,6 +24,31 @@ public class RegisterPage {
     String newEmailAddress, winHandleOfTempMail, winHandleOfRegisterPage;
     ArrayList<String> tabList;
 
+    public static String validUsername, validEmail, invalidUsername, invalidEmail;
+
+    public static int validPassword;
+
+    public static String password;
+
+
+    @FindBy(id = "ContentPlaceHolder1_txtUserName-error")
+    public WebElement usernameError;
+
+    @FindBy(id = "ContentPlaceHolder1_txtEmail-error")
+    public WebElement emailError;
+
+    @FindBy(id = "ContentPlaceHolder1_txtConfirmEmail-error")
+    public WebElement confirmEmailError;
+
+    @FindBy(id = "ContentPlaceHolder1_txtPassword-error")
+    public WebElement passwordError;
+
+    @FindBy(id = "ContentPlaceHolder1_txtPassword2-error")
+    public WebElement confirmPasswordError;
+
+    @FindBy(id = "ctl00$ContentPlaceHolder1$MyCheckBox-error")
+    public WebElement IAgreeToTheTermsAndCondError;
+
 
     @FindBy(css = "[id='btnCookie']")
     private WebElement acceptCookiesButton;
@@ -60,9 +85,6 @@ public class RegisterPage {
 
     @FindBy(xpath = "//div[normalize-space(text())='Your account registration has been submitted and is pending email verification']")
     public WebElement successfulRegistrationMessage;
-
-
-
 
 
     public void verifyRegistrationPageLoaded() {
@@ -106,7 +128,7 @@ public class RegisterPage {
         winHandleOfRegisterPage = driver().getWindowHandle();
 
         usernameInput.clear();
-        usernameInput.sendKeys("etherscanTest" + new Random().nextInt(99));
+        usernameInput.sendKeys("etherscantest" + new Random().nextInt(10000));
         WebUtils.waitFor(1);
         emailAddressInput.clear();
         emailAddressInput.sendKeys(newEmailAddress);
@@ -124,7 +146,7 @@ public class RegisterPage {
 
     public void verifyCheckboxIsNotSelected(String checkbox) {
 
-        switch (checkbox){
+        switch (checkbox) {
             case "Terms and Conditions":
                 assertFalse(IAgreeTermsAndConditions.isSelected());
                 break;
@@ -136,14 +158,14 @@ public class RegisterPage {
 
     public void markTheCheckbox(String checkbox) {
 
-        switch (checkbox){
+        switch (checkbox) {
             case "Terms and Conditions":
-                JavascriptExecutor jse = (JavascriptExecutor)driver();
-                jse.executeScript("arguments[0].click();", IAgreeTermsAndConditions );
+                JavascriptExecutor jse = (JavascriptExecutor) driver();
+                jse.executeScript("arguments[0].click();", IAgreeTermsAndConditions);
                 break;
             case "Subscription":
-                JavascriptExecutor jse2 = (JavascriptExecutor)driver();
-                jse2.executeScript("arguments[0].click();", IAgreeSubscription );
+                JavascriptExecutor jse2 = (JavascriptExecutor) driver();
+                jse2.executeScript("arguments[0].click();", IAgreeSubscription);
                 break;
         }
     }
@@ -156,5 +178,97 @@ public class RegisterPage {
     public void verifyRegistrationMessageIsDisplayed() {
 
         Assert.assertTrue(successfulRegistrationMessage.isDisplayed());
+    }
+
+    public void getRandomUsernameAndInsert() {
+
+        validUsername = WebUtils.generateAlphaNumericUsername(10);
+        usernameInput.sendKeys(validUsername);
+    }
+
+    public void getRandomEmailAndInsertTwice() {
+
+        validEmail = WebUtils.generateEmailAddress();
+        emailAddressInput.sendKeys(validEmail);
+        confirmEmailAddressInput.sendKeys(validEmail);
+    }
+
+    public void getRandomPasswordAndInsertTwice() {
+
+        validPassword = new Random().nextInt(1000000) + 10000;
+        passwordInput.sendKeys(Integer.toString(validPassword));
+        confirmPasswordInput.sendKeys(Integer.toString(validPassword));
+    }
+
+    public void verifySeeingInvalidCaptchaError() {
+
+        assertTrue(invalidCaptchaError.isDisplayed());
+    }
+
+    public void verifyAllErrorMessagesAreDisplayed() {
+
+        assertTrue(usernameError.isDisplayed());
+        assertTrue(emailError.isDisplayed());
+        assertTrue(confirmEmailError.isDisplayed());
+        assertTrue(passwordError.isDisplayed());
+        assertTrue(confirmPasswordError.isDisplayed());
+        assertTrue(IAgreeToTheTermsAndCondError.isDisplayed());
+    }
+
+    public void enterInvalidUsernames(String username) {
+
+        usernameInput.sendKeys(username);
+    }
+
+    public void verifyErrorMessageIsDisplayed(String inputboxName) {
+
+        switch (inputboxName) {
+            case "username":
+                assertTrue(usernameError.isDisplayed());
+                break;
+            case "email":
+                assertTrue(emailError.isDisplayed());
+                break;
+            case "confirm email":
+                assertTrue(confirmEmailError.isDisplayed());
+                break;
+            case "password":
+                assertTrue(passwordError.isDisplayed());
+                break;
+            case "confirm password":
+                assertTrue(confirmPasswordError.isDisplayed());
+                break;
+            case "Terms and Conditions":
+                assertTrue(IAgreeToTheTermsAndCondError.isDisplayed());
+                break;
+        }
+
+    }
+
+    public void enterUsernameLongerThanExpected(int length) {
+
+        String randomUsername = WebUtils.generateAlphaNumericUsername(length + 7);
+        usernameInput.sendKeys(randomUsername);
+    }
+
+    public void verifyAvailableUsernameEquals30(int length) {
+
+        assertEquals(length, usernameInput.getAttribute("value").length());
+    }
+
+    public void enterPassword() {
+
+        password = "asdf1234";
+        passwordInput.sendKeys(password);
+    }
+
+    public void enterDifferentPassword() {
+
+        confirmPasswordInput.sendKeys(password + "extra");
+    }
+
+    public void verifyMismatchingErrorIsDisplayed() {
+
+        Assert.assertEquals("Password does not match, please check again.",confirmPasswordError.getText());
     }
 }
