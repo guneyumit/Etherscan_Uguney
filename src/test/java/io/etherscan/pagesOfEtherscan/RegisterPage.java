@@ -1,5 +1,6 @@
 package io.etherscan.pagesOfEtherscan;
 
+import com.github.javafaker.Faker;
 import io.etherscan.Utilities.ConfigReader;
 import io.etherscan.Utilities.WebUtils;
 import org.junit.Assert;
@@ -270,5 +271,16 @@ public class RegisterPage {
     public void verifyMismatchingErrorIsDisplayed() {
 
         Assert.assertEquals("Password does not match, please check again.",confirmPasswordError.getText());
+    }
+
+    public void enterPasswordLessThan(int passwordlength) {
+
+        password = Integer.toString(new Random().nextInt(passwordlength));
+        passwordInput.sendKeys(password);
+    }
+
+    public void enterSamePassword() {
+
+        confirmPasswordInput.sendKeys(password);
     }
 }

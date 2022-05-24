@@ -130,4 +130,22 @@ public class RegisterStepDefs {
 
         registerPage.verifyMismatchingErrorIsDisplayed();
     }
+
+    @And("enters a password with a length of {int}")
+    public void entersAPasswordWithALengthOfLength(int length) {
+
+        registerPage.enterPasswordLessThan(length);
+    }
+
+    @And("enters same password in confirm password input")
+    public void entersSamePasswordInConfirmPasswordInput() {
+
+        registerPage.enterSamePassword();
+    }
+
+    @Then("password should be at least {int} characters long error is displayed under {string} input")
+    public void passwordShouldBeAtLeastCharactersLongErrorIsDisplayedUnderInput(int length, String inputboxName) {
+
+        registerPage.verifyErrorMessageIsDisplayed(inputboxName);
+    }
 }

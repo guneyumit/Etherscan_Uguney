@@ -35,7 +35,7 @@ Feature: Register
   @usernameNegative-1
   Scenario Outline: User should not be able to register with a username with invalid length
     When user enters different invalid username types below "<invalidUsername>"
-    Then verify "username" is invalid error message should be displayed
+    Then verify "username" error message should be displayed
 
     Examples:
       | invalidUsername |
@@ -67,15 +67,33 @@ Feature: Register
     And user enters a different password in confirm password input box
     Then password doesn't match error should be displayed
 
-  @EmailInvalid1 @try
-  Scenario: User should not be able to register with an invalid email address format
+
+  @PasswordInvalidLength @try
+  Scenario Outline: User should not be able to register with a password has less than 5 characters
     When user enters a valid username
-    And enters "abc@abc" in email address input
+    And user enters a valid email address twice
+    And enters a password with a length of <length>
+    Then password should be at least 5 characters long error is displayed under "password" input
     And enters same password in confirm password input
-    And selects agreeing to the terms and conditions
-    And passes reCaptcha manually
-    And clicks Create an Account button
-    Then registration should fail with a warning message for invalid email address
+    Then password should be at least 5 characters long error is displayed under "confirm password" input
+    Examples:
+      | length |
+      | 1      |
+      | 4      |
+
+
+  @EmailInvalid1 @try
+  Scenario Outline: User should not be able to register with an invalid email address format
+    When user enters a valid username
+    And enters "<invalid email>" types
+    Then verify "email" error message should be displayed
+
+
+
+    Examples:
+      | invalid email |
+
+
 
 
 
