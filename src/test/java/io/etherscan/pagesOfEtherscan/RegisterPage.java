@@ -25,7 +25,7 @@ public class RegisterPage {
     String newEmailAddress, winHandleOfTempMail, winHandleOfRegisterPage;
     ArrayList<String> tabList;
 
-    public static String validUsername, validEmail, invalidUsername, invalidEmail;
+    public static String validUsername, validEmail;
 
     public static int validPassword;
 
@@ -82,7 +82,7 @@ public class RegisterPage {
     private WebElement submitButton;
 
     @FindBy(xpath = "//div[contains(text(),'Invalid captcha')]")
-    private WebElement invalidCaptchaError;
+    public WebElement invalidCaptchaError;
 
     @FindBy(xpath = "//div[normalize-space(text())='Your account registration has been submitted and is pending email verification']")
     public WebElement successfulRegistrationMessage;
@@ -113,14 +113,14 @@ public class RegisterPage {
     public void openANewTab() {
 
         ((JavascriptExecutor) driver()).executeScript("window.open()");
-        WebUtils.waitFor(1);
+
         tabList = new ArrayList<String>(driver().getWindowHandles());
         driver().switchTo().window(tabList.get(1));
     }
 
     public void goToRegisterPage() {
 
-        WebUtils.waitFor(1);
+
         driver().get(ConfigReader.get("url"));
     }
 
@@ -130,19 +130,19 @@ public class RegisterPage {
 
         usernameInput.clear();
         usernameInput.sendKeys("etherscantest" + new Random().nextInt(10000));
-        WebUtils.waitFor(1);
+
         emailAddressInput.clear();
         emailAddressInput.sendKeys(newEmailAddress);
-        WebUtils.waitFor(1);
+
         confirmEmailAddressInput.clear();
         confirmEmailAddressInput.sendKeys(newEmailAddress);
-        WebUtils.waitFor(1);
+
         passwordInput.clear();
         passwordInput.sendKeys("pw1234567");
-        WebUtils.waitFor(1);
+
         confirmPasswordInput.clear();
         confirmPasswordInput.sendKeys("pw1234567");
-        WebUtils.waitFor(1);
+
     }
 
     public void verifyCheckboxIsNotSelected(String checkbox) {
@@ -282,5 +282,21 @@ public class RegisterPage {
     public void enterSamePassword() {
 
         confirmPasswordInput.sendKeys(password);
+    }
+
+    public void enterInvalidEmail(String invalidEmailType) {
+
+        emailAddressInput.sendKeys(invalidEmailType);
+    }
+
+    public void enterInvalidEmailIntoConfirmEmail(String invalidEmailType) {
+
+        confirmEmailAddressInput.sendKeys(invalidEmailType);
+    }
+
+    public void getRandomEmailAndInsert() {
+
+        validEmail = WebUtils.generateEmailAddress();
+        emailAddressInput.sendKeys(validEmail);
     }
 }

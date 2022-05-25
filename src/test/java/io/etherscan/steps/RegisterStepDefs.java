@@ -148,4 +148,22 @@ public class RegisterStepDefs {
 
         registerPage.verifyErrorMessageIsDisplayed(inputboxName);
     }
+
+    @And("enters {string} types into email input box")
+    public void entersTypes(String invalidEmailType) {
+
+        registerPage.enterInvalidEmail(invalidEmailType);
+    }
+
+    @When("user enters {string} types into confirm email input box")
+    public void userEntersTypesIntoConfirmEmailInputBox(String invalidEmailType) {
+
+        registerPage.enterInvalidEmailIntoConfirmEmail(invalidEmailType);
+    }
+
+    @And("user enters a valid email address")
+    public void userEntersAValidEmailAddress() {
+
+        registerPage.getRandomEmailAndInsert();
+    }
 }

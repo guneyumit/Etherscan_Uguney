@@ -4,8 +4,8 @@ Feature: Register
   Background:
     Given user is on the register page
 
-
-  Scenario: Verify that user can fill out the registration form
+@ValidRegistrationWithTempMail
+  Scenario: Verify that user can fill out the registration form after taking a new temporary mail address
     When user creates a new email address from temp mail website
     And user opens a new tab
     Given user is on the register page
@@ -13,7 +13,7 @@ Feature: Register
     And user selects "Terms and Conditions" checkbox
     And user selects "Subscription" checkbox
     When user hits the submit button
-    Then Registration has been submitted message should be displayed
+    Then verify each element works fine in the registration form
 
   @ValidRegistration
   Scenario: Verify that user can fill out the registration form with valid credentials
@@ -68,7 +68,7 @@ Feature: Register
     Then password doesn't match error should be displayed
 
 
-  @PasswordInvalidLength @try
+  @PasswordInvalidLength
   Scenario Outline: User should not be able to register with a password has less than 5 characters
     When user enters a valid username
     And user enters a valid email address twice
@@ -82,16 +82,51 @@ Feature: Register
       | 4      |
 
 
-  @EmailInvalid1 @try
+  @EmailInvalid1
   Scenario Outline: User should not be able to register with an invalid email address format
     When user enters a valid username
-    And enters "<invalid email>" types
+    And enters "<invalid email>" types into email input box
     Then verify "email" error message should be displayed
-
-
-
+    When user enters "<invalid email>" types into confirm email input box
+    Then verify "confirm email" error message should be displayed
+    When user enters a valid password twice
+    And user selects "Terms and Conditions" checkbox
+    And user selects "Subscription" checkbox
+    And user hits the submit button
+    Then verify "email" error message should be displayed
+    Then verify "confirm email" error message should be displayed
     Examples:
       | invalid email |
+      | abc@abc.      |
+      | abc@          |
+      | @abc          |
+      | 1234567       |
+      | mail.com      |
+      | mail.com@     |
+      | mail@.com     |
+
+
+  @EmptyConfirmPassword
+  Scenario: User should not be able to register without putting password in confirm password
+    When user enters a valid username
+    And user enters a valid email address twice
+    And user enters a valid password
+    And user selects "Terms and Conditions" checkbox
+    And user selects "Subscription" checkbox
+    And user hits the submit button
+    Then verify "confirm password" error message should be displayed
+
+
+  @EmptyConfirmEmail
+  Scenario: User should not be able to register without putting email address in confirm email input box
+    When user enters a valid username
+    And user enters a valid email address
+    And user enters a valid password twice
+    And user selects "Terms and Conditions" checkbox
+    And user selects "Subscription" checkbox
+    And user hits the submit button
+    Then verify "confirm email" error message should be displayed
+
 
 
 
