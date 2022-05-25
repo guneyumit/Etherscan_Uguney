@@ -90,7 +90,7 @@ public class RegisterStepDefs {
         registerPage.verifyAllErrorMessagesAreDisplayed();
     }
 
-    @When("user enters different invalid username types below {string}")
+    @When("user enters different {string} types below")
     public void userEntersDifferentInvalidUsernameTypesBelow(String username) {
 
         registerPage.enterInvalidUsernames(username);
@@ -102,8 +102,8 @@ public class RegisterStepDefs {
         registerPage.verifyErrorMessageIsDisplayed(inputboxName);
     }
 
-    @When("user tries to enter more than {int} alphanumeric characters into the username input box")
-    public void userTriesToEnterMoreThanAlphanumericCharactersIntoTheUsernameInputBox(int length) {
+    @When("user inserts more than {int} alphanumeric characters into the username input box")
+    public void userInsertsMoreThanAlphanumericCharactersIntoTheUsernameInputBox(int length) {
 
         registerPage.enterUsernameLongerThanExpected(length);
     }
@@ -165,5 +165,17 @@ public class RegisterStepDefs {
     public void userEntersAValidEmailAddress() {
 
         registerPage.getRandomEmailAndInsert();
+    }
+
+    @And("user enters a valid password as {string}")
+    public void userEntersAValidPasswordAs(String password) {
+
+        registerPage.enterPasswordAs(password);
+    }
+
+    @Then("verify {string} warning is displayed")
+    public void verifyWarningIsDisplayed(String passwordStrength) {
+
+        registerPage.verifyPasswordStrengthIsDisplayed(passwordStrength);
     }
 }

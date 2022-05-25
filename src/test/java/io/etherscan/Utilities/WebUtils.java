@@ -7,6 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.Date;
 
 import java.util.Random;
 
@@ -34,7 +37,7 @@ public class WebUtils {
     }
 
     public static void waitForPresenceOfElement(By by, long time) {
-        new WebDriverWait(driver(), time).until(ExpectedConditions.presenceOfElementLocated(by));
+        new WebDriverWait(driver(), Duration.ofSeconds(time)).until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
     public static void scrollToElement(WebElement element) {
@@ -42,7 +45,7 @@ public class WebUtils {
     }
 
     public static WebElement waitForVisibility(WebElement element, int timeToWaitInSec) {
-        WebDriverWait wait = new WebDriverWait(driver(), timeToWaitInSec);
+        WebDriverWait wait = new WebDriverWait(driver(), Duration.ofSeconds(timeToWaitInSec));
         return wait.until(ExpectedConditions.visibilityOf(element));
     }
     public static void waitForPageToLoad(long timeOutInSeconds) {
@@ -52,7 +55,7 @@ public class WebUtils {
             }
         };
         try {
-            WebDriverWait wait = new WebDriverWait(driver(), timeOutInSeconds);
+            WebDriverWait wait = new WebDriverWait(driver(), Duration.ofSeconds(timeOutInSeconds));
             wait.until(expectation);
         } catch (Throwable error) {
             error.printStackTrace();

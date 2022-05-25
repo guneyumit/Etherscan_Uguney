@@ -87,6 +87,15 @@ public class RegisterPage {
     @FindBy(xpath = "//div[normalize-space(text())='Your account registration has been submitted and is pending email verification']")
     public WebElement successfulRegistrationMessage;
 
+    @FindBy(xpath = "//span[text()='Strength: Weak!']")
+    public WebElement weakPasswordWarning;
+
+    @FindBy(xpath = "//span[text()='Strength: Medium!']")
+    public WebElement mediumPasswordWarning;
+
+    @FindBy(xpath = "//span[text()='Strength: Strong!']")
+    public WebElement strongPasswordWarning;
+
 
     public void verifyRegistrationPageLoaded() {
         String registrationPageTitle = "Etherscan Registration Page";
@@ -298,5 +307,26 @@ public class RegisterPage {
 
         validEmail = WebUtils.generateEmailAddress();
         emailAddressInput.sendKeys(validEmail);
+    }
+
+    public void enterPasswordAs(String password) {
+
+        passwordInput.sendKeys(password);
+    }
+
+    public void verifyPasswordStrengthIsDisplayed(String passwordStrength) {
+
+        switch (passwordStrength) {
+            case "Strength: Weak!":
+                assertTrue(weakPasswordWarning.isDisplayed());
+                break;
+            case "Strength: Medium!":
+                assertTrue(mediumPasswordWarning.isDisplayed());
+                break;
+            case "Strength: Strong!":
+                assertTrue(strongPasswordWarning.isDisplayed());
+                break;
+
+        }
     }
 }
