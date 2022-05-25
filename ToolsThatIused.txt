@@ -16,6 +16,10 @@ Tools that are used in this framework:
       in our framework
     - Java Faker : It helps us to generate random test data such as username, email, password
 
+5. Plugins in Pom.xml :
+    - Maven Surefire plugin : This plugin helps us to build and run our test suites/cases via Maven lifecycle
+    - Maven Cucumber Reporting plugin : This plugin helps us to create reports for our test suites/cases as well.
+
 6. RunTests package :
     - TestRunner class: In this class, we use some Cucumber tools to define this class as a test runner with some
      configurations like which tags in feature files to be run, dryRun or not. Also We make a connection between
